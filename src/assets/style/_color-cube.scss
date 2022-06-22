@@ -1,0 +1,11 @@
+.cube{
+    background-color: red;
+    width: 300px;
+    height: 300px;
+    .scale{
+        background-color: aqua;
+        height: 20px;
+        position: relative;
+        top: 280px;
+    }
+}

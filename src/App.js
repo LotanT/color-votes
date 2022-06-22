@@ -1,8 +1,12 @@
+import { FavoriteColor } from "./pages/FavoriteColor";
+import './assets/style/main.scss'
+
 
 function App() {
   return (
     <div className="App">
-    <h1>Hello world</h1>
+    <header className="container">Favorite Color</header>
+    <FavoriteColor/>
     </div>
   );
 }

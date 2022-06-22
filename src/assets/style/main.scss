@@ -1,0 +1,24 @@
+@import 'color-cube';
+@import 'favorite-color';
+@import 'styles.scss';
+
+
+
+
+
+.App{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    header{
+        height: 70px;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        background-color: #069A8E;
+        justify-content: center;
+        color: white;
+        font-size: 2em;
+        font-weight: 600;
+    }
+}
