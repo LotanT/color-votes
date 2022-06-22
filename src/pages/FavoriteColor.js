@@ -13,7 +13,7 @@ export function FavoriteColor() {
     }, [])
 
     const getColorVotes = () => {
-        let colorVotes = colorVotesService.getColorRate()
+        let colorVotes = colorVotesService.getColorVotes()
         let maxVotes = getMaxVote(colorVotes)
         setColorVotes(colorVotes)
         setMaxVotes(maxVotes)
@@ -21,17 +21,26 @@ export function FavoriteColor() {
 
     const getMaxVote = (colorVotes) => {
         let maxVotes = 0
-        colorVotes.map(colorData=>{
-            if(maxVotes<colorData.votes) maxVotes = colorData.votes
+        colorVotes.map(colorData => {
+            if (maxVotes < colorData.votes) maxVotes = colorData.votes
         })
         return maxVotes;
+    }
+
+    const addVote = (color)=>{
+        let updatedColorVotes = colorVotes.map(colorData=>{
+            if(colorData.color === color) colorData.votes++
+            return colorData
+        })
+        colorVotesService.updateColorVotes(updatedColorVotes)
+        setColorVotes(updatedColorVotes)
     }
 
     return (
         <container className='favorite-color container'>
             <div className="title">Click on your favorite color:</div>
             <div className="cube-container">
-                {colorVotes.map((colorData) => <ColorCube colorData={colorData} maxVotes={maxVotes} key={colorData.color} />)}
+                {colorVotes.map((colorData) => <ColorCube addVote={addVote} colorData={colorData} maxVotes={maxVotes} key={colorData.color} />)}
             </div>
         </container>
     )

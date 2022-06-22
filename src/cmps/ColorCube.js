@@ -1,7 +1,7 @@
 
 
 
-export function ColorCube({ colorData, maxVotes }) {
+export function ColorCube({ colorData, maxVotes, addVote }) {
 
     const getWidth = () => {
         let width = 200 * (colorData.votes / maxVotes)
@@ -9,7 +9,7 @@ export function ColorCube({ colorData, maxVotes }) {
     }
 
     return (
-        <container className="cube" style={{ 'backgroundColor': colorData.color }}>
+        <container className="cube" onClick={()=>addVote(colorData.color)} style={{ 'backgroundColor': colorData.color }}>
             <div className="scale" style={{ 'width': getWidth() }}>{colorData.votes}</div>
         </container>
     )
