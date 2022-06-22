@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ColorCube } from "../cmps/ColorCube";
 import { colorVotesService } from "../services/colorVotes.service";
+import { socketService, SOCKET_EVENT_COLORVOTES_CHANGE, SOCKET_EMIT_COLORVOTES_UPDATE} from "../services/socket.service";
 
 
 export function FavoriteColor() {
@@ -10,6 +11,13 @@ export function FavoriteColor() {
 
     useEffect(() => {
         getColorVotes()
+        socketService.on(SOCKET_EVENT_COLORVOTES_CHANGE, (colorVotes)=>{
+            setColorVotes(colorVotes)
+            setMaxVote(colorVotes.colorVotes)
+        })
+        return ()=>{
+            socketService.off(SOCKET_EVENT_COLORVOTES_CHANGE)
+        }
     },[])
 
     const getColorVotes = async () => {
@@ -33,6 +41,7 @@ export function FavoriteColor() {
         })
         const newColorVotes = {_id: colorVotes._id, colorVotes: updatedColorVotes}
         colorVotesService.updateColorVotes(newColorVotes)
+        socketService.emit(SOCKET_EMIT_COLORVOTES_UPDATE, newColorVotes)
         setColorVotes(newColorVotes)
         setMaxVote(updatedColorVotes)
     }

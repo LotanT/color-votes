@@ -3,6 +3,7 @@ const cors = require('cors');
 
 const app = express();
 app.use(express.json())
+const http = require('http').createServer(app);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.resolve(__dirname, 'public')));
@@ -20,11 +21,13 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const colorVotesRoutes = require('./api/colorVotes/colorVotes.routes')
+const { connectSockets } = require('./services/socket.service');
 
 app.use('/api/colorvotes', colorVotesRoutes);
+connectSockets(http)
 
 const port = process.env.PORT || 3030;
 
-app.listen(port, () => {
+http.listen(port, () => {
     console.log('Server is running on port: ' + port);
   });
