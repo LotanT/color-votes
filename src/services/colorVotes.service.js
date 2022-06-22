@@ -9,17 +9,20 @@ export const colorVotesService = {
 const KEY = 'color-rate';
 
 async function getColorVotes() {
-    // let colorRate = utils.loadFromStorage(KEY)
     let colorVotes = await httpService.get('colorvotes')
     if (!colorVotes) {
-        let starter = getStarter()
-        colorVotes = await httpService.post('colorvotes',starter)
+        colorVotes = utils.loadFromStorage(KEY)
+        if (!colorVotes) {
+            let starter = getStarter()
+            colorVotes = await httpService.post('colorvotes', starter)
+            utils.storeToStorage(KEY, colorVotes)
+        }
     }
-    return colorVotes[0]
+return colorVotes[0]
 }
 
 async function updateColorVotes(colorVotes) {
-    // utils.storeToStorage(KEY, colorVotes)
+    utils.storeToStorage(KEY, colorVotes)
     await httpService.put(`colorvotes/${colorVotes._id}`, colorVotes)
 }
 
