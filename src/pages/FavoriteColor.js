@@ -10,21 +10,20 @@ export function FavoriteColor() {
 
     useEffect(() => {
         getColorVotes()
-    }, [])
+    },[])
 
     const getColorVotes = () => {
         let colorVotes = colorVotesService.getColorVotes()
-        let maxVotes = getMaxVote(colorVotes)
+        setMaxVote(colorVotes)
         setColorVotes(colorVotes)
-        setMaxVotes(maxVotes)
     }
 
-    const getMaxVote = (colorVotes) => {
+    const setMaxVote = (colorVotes) => {
         let maxVotes = 0
-        colorVotes.map(colorData => {
+        colorVotes.forEach(colorData => {
             if (maxVotes < colorData.votes) maxVotes = colorData.votes
         })
-        return maxVotes;
+        setMaxVotes(maxVotes)
     }
 
     const addVote = (color)=>{
@@ -34,8 +33,9 @@ export function FavoriteColor() {
         })
         colorVotesService.updateColorVotes(updatedColorVotes)
         setColorVotes(updatedColorVotes)
+        setMaxVote(updatedColorVotes)
     }
-
+   
     return (
         <container className='favorite-color container'>
             <div className="title">Click on your favorite color:</div>
