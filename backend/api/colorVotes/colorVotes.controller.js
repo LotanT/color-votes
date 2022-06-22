@@ -19,7 +19,6 @@ async function getColorVotes(req, res){
 async function addColorVotes(req,res) {
     try{
         let colorVotes = {colorVotes: req.body}
-        console.log(colorVotes);
         await colorVotesService.add(colorVotes)
         res.json(colorVotes)
     } catch (err) {

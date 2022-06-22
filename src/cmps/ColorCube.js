@@ -9,8 +9,8 @@ export function ColorCube({ colorData, maxVotes, addVote }) {
     }
 
     return (
-        <container className="cube" onClick={()=>addVote(colorData.color)} style={{ 'backgroundColor': colorData.color }}>
+        <div className="cube" onClick={()=>addVote(colorData.color)} style={{ 'backgroundColor': colorData.color }}>
             <div className="scale" style={{ 'width': getWidth() }}>{colorData.votes}</div>
-        </container>
+        </div>
     )
 }

@@ -5,16 +5,16 @@ import { colorVotesService } from "../services/colorVotes.service";
 
 export function FavoriteColor() {
 
-    const [colorVotes, setColorVotes] = useState([])
+    const [colorVotes, setColorVotes] = useState({})
     const [maxVotes, setMaxVotes] = useState([])
 
     useEffect(() => {
         getColorVotes()
     },[])
 
-    const getColorVotes = () => {
-        let colorVotes = colorVotesService.getColorVotes()
-        setMaxVote(colorVotes)
+    const getColorVotes = async () => {
+        let colorVotes = await colorVotesService.getColorVotes()
+        setMaxVote(colorVotes.colorVotes)
         setColorVotes(colorVotes)
     }
 
@@ -27,21 +27,24 @@ export function FavoriteColor() {
     }
 
     const addVote = (color)=>{
-        let updatedColorVotes = colorVotes.map(colorData=>{
+        const updatedColorVotes = colorVotes.colorVotes.map(colorData=>{
             if(colorData.color === color) colorData.votes++
             return colorData
         })
-        colorVotesService.updateColorVotes(updatedColorVotes)
-        setColorVotes(updatedColorVotes)
+        const newColorVotes = {_id: colorVotes._id, colorVotes: updatedColorVotes}
+        colorVotesService.updateColorVotes(newColorVotes)
+        setColorVotes(newColorVotes)
         setMaxVote(updatedColorVotes)
     }
-   
+    
+    const colorVotesData = colorVotes.colorVotes
+    if(!colorVotesData) return
     return (
-        <container className='favorite-color container'>
+        <div className='favorite-color container'>
             <div className="title">Click on your favorite color:</div>
             <div className="cube-container">
-                {colorVotes.map((colorData) => <ColorCube addVote={addVote} colorData={colorData} maxVotes={maxVotes} key={colorData.color} />)}
+                {colorVotesData.map((colorData) => <ColorCube addVote={addVote} colorData={colorData} maxVotes={maxVotes} key={colorData.color} />)}
             </div>
-        </container>
+        </div>
     )
 }

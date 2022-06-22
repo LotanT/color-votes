@@ -1,4 +1,5 @@
 import { utils } from "./utils.service";
+import { httpService } from './http.service';
 
 export const colorVotesService = {
     getColorVotes,
@@ -7,14 +8,19 @@ export const colorVotesService = {
 
 const KEY = 'color-rate';
 
-function getColorVotes() {
-    let colorRate = utils.loadFromStorage(KEY)
-    if (!colorRate) colorRate = getStarter()
-    return colorRate
+async function getColorVotes() {
+    // let colorRate = utils.loadFromStorage(KEY)
+    let colorVotes = await httpService.get('colorvotes')
+    if (!colorVotes) {
+        let starter = getStarter()
+        colorVotes = await httpService.post('colorvotes',starter)
+    }
+    return colorVotes[0]
 }
 
-function updateColorVotes(colorVotes) {
-    utils.storeToStorage(KEY, colorVotes)
+async function updateColorVotes(colorVotes) {
+    // utils.storeToStorage(KEY, colorVotes)
+    await httpService.put(`colorvotes/${colorVotes._id}`, colorVotes)
 }
 
 function getStarter() {
